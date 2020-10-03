@@ -1,0 +1,90 @@
+<html>
+
+<body>
+<button id="request">Request Device</button>
+
+<script>
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+
+document.getElementById("request").onclick = function()
+{
+   Get();
+/*
+    navigator.usb.requestDevice({ filters: [{ vendorId: 0x067b,productId:0x2303 }]})
+  .then((requestedDevice) => {
+    device = requestedDevice;
+  }).then(() => {
+   console.log(device);
+  
+    return device.open({ baudRate: 9600 });
+  }).then(() => device.selectConfiguration(1)) // Select configuration #1 for the device.
+  .then(() => {
+
+    return device.reset();
+  }).then(() => device.claimInterface(0))
+  .then(() => {
+
+//const buffer = new Uint16Array([1,2,3,4,5,6]).buffer;
+    //return device.transferOut(2, buffer )
+     //return device.transferIn(3,16)
+     //return device.transferIn(3,64)
+     return device.transferIn(3,64)
+  })
+  .then((data) => {
+
+   console.log("hii",data);
+
+   var string = new TextDecoder("utf-8").decode(data.data.buffer);
+
+console.log("hii",string);
+   
+    
+  }).catch(err => {
+    console.log(err);
+  });
+  */
+
+}
+
+
+
+
+
+
+async function Get()
+{
+
+  let device= await navigator.usb.requestDevice({ filters: [{ vendorId: 0x067b,productId:0x2303 }]})
+console.log(device);
+  await device.open({ baudRate: 9600 });
+  await device.selectConfiguration(1);
+  await device.claimInterface(0);
+
+while(true)
+{
+
+  let result =  await device.transferIn(3,64);
+  
+  var string = new TextDecoder("utf-8").decode(result.data.buffer);
+
+console.log("hii",string);
+}
+ 
+  
+
+
+  
+
+ 
+
+
+}
+
+</script>
+</body>
+
+
+
+</html>
